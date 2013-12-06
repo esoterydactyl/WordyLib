@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WordyLib;
-
+using System.Reflection;
 
 
 namespace WordyLibTests
@@ -18,7 +18,17 @@ namespace WordyLibTests
             string loadMessage = "Loaded Wordy Lib Tests version: " + version.ToString();
             Console.WriteLine(loadMessage);
             Console.WriteLine("...........");
-            Reflector.GetAssemblyNames();
+            Reflector.GetAssemblyInfo();
+            Console.WriteLine("Beginning Tests...");
+            string url = "http://www.cnn.com";
+            Console.WriteLine("Reference URL is: " + url);
+            Console.WriteLine("...........");
+
+           var foo = Wordy.getKeywords(url);
+            
+
+
+
 
             Console.ReadKey();
         }

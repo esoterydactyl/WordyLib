@@ -9,7 +9,7 @@ namespace WordyLibTests
 {
     class Reflector
     {
-        public static void GetAssemblyNames()
+        public static void GetAssemblyInfo()
         {
             Assembly ass = Assembly.GetAssembly(typeof(WordyLib.Wordy));
             string name = ass.FullName;
