@@ -15,9 +15,10 @@ namespace WordyLibTests
         {
             System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
             Version version = assembly.GetName().Version;
-            Console.WriteLine(version);
-
-
+            string loadMessage = "Loaded Wordy Lib Tests version: " + version.ToString();
+            Console.WriteLine(loadMessage);
+            Console.WriteLine("...........");
+            Reflector.GetAssemblyNames();
 
             Console.ReadKey();
         }
