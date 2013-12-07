@@ -52,7 +52,7 @@ namespace WordyLib
         }
 
     }
-    
+
     //#########################################################################
 
     public static class SimpleCrawler
@@ -135,7 +135,7 @@ namespace WordyLib
 
 
         }
-         
+
     }
 
     //#########################################################################
@@ -145,28 +145,26 @@ namespace WordyLib
         public static string GetWeb(string args)
         {
             Console.WriteLine("loaded simplescraper");
-            try
-            {
-                WebRequest basicWeb = WebRequest.Create(args);
-                basicWeb.Headers.Add("myHeader", "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.97 Safari/537.11");
-                WebResponse webText = basicWeb.GetResponse();
-                Stream webrStream = webText.GetResponseStream();
-                StreamReader reader = new StreamReader(webrStream);
-                string responseFromServer = reader.ReadToEnd();
-                webrStream.Close();
-                MixedCodeDocument page = new MixedCodeDocument();
-                page.LoadHtml(responseFromServer);
-                string bodyString = page.ToString();
-                return responseFromServer;
-            }
-            catch
-            {
-                string badResponse = "ERROR";
-                return badResponse;
-            }
+            string path = "C:\\Users\\david\\Documents\\GitHub\\WordyLib\\WordyLib\\BrowserStrings.txt";
+            string[] lines = File.ReadAllLines(path);
+            Random r = new Random();
+            int randomLineNumber = r.Next(0, lines.Length - 1);
+            string BrowserHeaderString = lines[randomLineNumber];
+
+            WebRequest basicWeb = WebRequest.Create(args);
+            basicWeb.Headers.Add("myHeader", BrowserHeaderString);
+            WebResponse webText = basicWeb.GetResponse();
+            Stream webrStream = webText.GetResponseStream();
+            StreamReader reader = new StreamReader(webrStream);
+            string responseFromServer = reader.ReadToEnd();
+            webrStream.Close();
+            MixedCodeDocument page = new MixedCodeDocument();
+            page.LoadHtml(responseFromServer);
+            string bodyString = page.ToString();
+            return responseFromServer;
         }
     }
-    
+
     //#########################################################################
 
     public static class BlacklistCheck
@@ -192,7 +190,7 @@ namespace WordyLib
             return IsBlackListedResult;
         }
     }
-    
+
     //#########################################################################
 
     public static class Wordy
