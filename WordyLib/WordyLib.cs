@@ -60,12 +60,12 @@ namespace WordyLib
         public static string[] GetHREFs(string args)
         {
             List<string> URLTextList = new List<string>();
-            Console.WriteLine("loaded SimpleCrawler");
+            //Console.WriteLine("loaded SimpleCrawler");
             HtmlAgilityPack.HtmlDocument DocToCrawl = new HtmlDocument();
             DocToCrawl.LoadHtml(args);
             string xpath = "//body//a";
             HtmlNodeCollection URLbody = DocToCrawl.DocumentNode.SelectNodes(xpath);
-            Console.WriteLine("simple scraper Processed!");
+            //Console.WriteLine("simple scraper Processed!");
             foreach (HtmlNode node in URLbody)
             {
                 URLTextList.Add(node.InnerText);
@@ -102,12 +102,12 @@ namespace WordyLib
             }
             //Done Building the bad list::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
             //Load the HTML doc
-            Console.WriteLine("loaded SimpleParser");
+            //Console.WriteLine("loaded SimpleParser");
             HtmlAgilityPack.HtmlDocument theDoc = new HtmlDocument();
             theDoc.LoadHtml(args);
             string xpath = "//text()[normalize-space() and not(ancestor::a | ancestor::script | ancestor::style | ancestor::form)]";
             HtmlNodeCollection body = theDoc.DocumentNode.SelectNodes(xpath);
-            Console.WriteLine("simple scraper Processed!");
+            //Console.WriteLine("simple scraper Processed!");
             foreach (HtmlNode node in body)
             {
                 innertextList.Add(node.InnerText);
@@ -144,7 +144,7 @@ namespace WordyLib
     {
         public static string GetWeb(string args)
         {
-            Console.WriteLine("loaded simplescraper");
+            //Console.WriteLine("loaded simplescraper");
             string path = "C:\\Users\\david\\Documents\\GitHub\\WordyLib\\WordyLib\\BrowserStrings.txt";
             string[] lines = File.ReadAllLines(path);
             Random r = new Random();
