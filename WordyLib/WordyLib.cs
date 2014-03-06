@@ -1,5 +1,6 @@
 ﻿using HtmlAgilityPack;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -9,6 +10,7 @@ using System.Text.RegularExpressions;
 
 namespace WordyLib
 {
+
     public static class SimpleCleaner
     {
         public static string[] degreaseString(string args)
@@ -53,8 +55,6 @@ namespace WordyLib
 
     }
 
-    //#########################################################################
-
     public static class SimpleCrawler
     {
         public static string[] GetHREFs(string args)
@@ -76,8 +76,6 @@ namespace WordyLib
 
         }
     }
-
-    //#########################################################################
 
     public static class SimpleParser
     {
@@ -138,14 +136,13 @@ namespace WordyLib
 
     }
 
-    //#########################################################################
-
     public static class SimpleScraper
     {
         public static string GetWeb(string args)
         {
-            //Console.WriteLine("loaded simplescraper");
-            string path = "C:\\Users\\david\\Documents\\GitHub\\WordyLib\\WordyLib\\BrowserStrings.txt";
+
+            var appLocation = new Uri(System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().CodeBase)).LocalPath;
+            string path = appLocation + @"/Resources/BrowserStrings.txt";
             string[] lines = File.ReadAllLines(path);
             Random r = new Random();
             int randomLineNumber = r.Next(0, lines.Length - 1);
@@ -165,14 +162,13 @@ namespace WordyLib
         }
     }
 
-    //#########################################################################
-
     public static class BlacklistCheck
     {
         public static bool IsBlackListed(string args)
         {
             bool IsBlackListedResult;
-            const string blackListFilePath = @"C:\Users\david\Documents\GitHub\WordyLib\WordyLib\Blacklist.txt";
+            var appLocation = new Uri(System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().CodeBase)).LocalPath;
+            string blackListFilePath = appLocation + @"/Resources/Blacklist.txt";
             var blackListFileData = File.ReadAllLines(blackListFilePath);
             List<string> BlackListList = new List<string>(blackListFileData);
             BlackListList = BlackListList.ConvertAll(d => d.ToLower());
@@ -191,7 +187,15 @@ namespace WordyLib
         }
     }
 
-    //#########################################################################
+    public class KeywordStats
+    {
+        public string keyWord { get; set; }
+        public int total { get; set; }
+    }
+
+
+    //Wordy and WordyStats are higher level methods that might actually be useful to you.
+
 
     public static class Wordy
     {
@@ -211,8 +215,39 @@ namespace WordyLib
 
             return keywordList;
         }
+    }
+
+    public static class WordyStats
+    {
+        public static List<KeywordStats> getKeywordStats(string url)
+        {
+            List<string> keywordList = new List<string>();
+            var webText = SimpleScraper.GetWeb(url);
+            string[] cleanText = SimpleParser.stripHTML(webText);
+            foreach (string line in cleanText)
+            {
+                string[] cleanString = SimpleCleaner.degreaseString(line);
+                foreach (string item in cleanString)
+                {
+                    keywordList.Add(item);
+                }
+            }
+
+            var stats = (from c in keywordList
+                         group c by c into p
+                         orderby p.Count()
+                         select new KeywordStats { keyWord = p.Key, total = p.Count() }).Reverse();
+
+            List<KeywordStats> statsData = new List<KeywordStats>();
+
+            foreach (KeywordStats k in stats)
+            {
+                statsData.Add(k);
+            }
+
+            return statsData;
+        }
 
     }
 
-    //#########################################################################
 }
